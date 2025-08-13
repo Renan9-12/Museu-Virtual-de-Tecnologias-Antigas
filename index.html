@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   Museu Virtual de Tecnologias Antigas
+  </title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+   :root {
+      --bg: radial-gradient(circle at top, #f0f4f8, #e2e8f0);
+      --text: #1f2937;
+      --card-bg: #ffffff;
+      --accent: #2563eb;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark {
+      --bg: radial-gradient(circle at top, #0f172a, #1e293b);
+      --text: #e2e8f0;
+      --card-bg: #1e293b;
+      --accent: #60a5fa;
+      --shadow: rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.4s ease;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(120deg, #0f172a, #1e3a8a);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    nav ul {
+      margin-top: 20px;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav ul li a {
+      padding: 10px 20px;
+      background: var(--accent);
+      border-radius: 25px;
+      font-weight: 600;
+      color: white;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    nav ul li a:hover {
+      background: #1d4ed8;
+      transform: translateY(-3px);
+    }
+
+    #hero {
+      background-image: url('museu.jpg');
+      background-attachment: fixed;
+      background-position: center;
+      background-size: cover;
+      color: white;
+      padding: 140px 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    #hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    #hero h2, #hero p {
+      position: relative;
+      z-index: 1;
+    }
+
+    #hero h2 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      font-weight: 800;
+    }
+
+    #hero p {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: auto;
+      color: #e2e8f0;
+    }
+
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+      animation: fadeIn 1s ease both;
+    }
+
+    section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      border-left: 6px solid var(--accent);
+      padding-left: 15px;
+      color: #4682b4;
+    }
+
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    }
+
+    .item {
+      background: var(--card-bg);
+      border-radius: 18px;
+      box-shadow: 0 8px 24px var(--shadow);
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px var(--shadow);
+      border-color: var(--accent);
+    }
+
+    .item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .item h3 {
+      font-size: 1.25rem;
+      margin: 15px;
+    }
+
+    .item p {
+      font-size: 1rem;
+      margin: 0 15px 20px;
+      color: var(--text);
+    }
+
+    #contato p {
+      font-size: 1.1rem;
+      max-width: 800px;
+    }
+
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.95rem;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+
+    .dark-toggle i {
+      margin-right: 6px;
+    }
+
+    #topBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: none;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px 14px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      #hero h2 {
+        font-size: 2rem;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet"/>
+<style>
+   .filtro-btn {
+  padding: 10px 18px;
+  margin: 0 10px 10px;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.filtro-btn:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+}
+.galeria .item {
+  display: block;
+}
+  </style>
+<style>
+   body.dark h3 {
+  color: #93c5fd !important; /* tom de azul claro mais visível */
+}
+
+body.dark .item {
+  background-color: #334155 !important;
+  border-color: #3b82f6;
+}
+
+body.dark .item h3 {
+  color: #e0f2fe !important;
+}
+
+body.dark .item p {
+  color: #cbd5e1 !important;
+}
+
+body.dark .filtro-btn {
+  background-color: #3b82f6;
+}
+
+body.dark .filtro-btn:hover {
+  background-color: #2563eb;
+}
+  </style>
+</head>
+<body>
+<button class="dark-toggle" onclick="toggleDark()">
+<i class="fas fa-moon">
+</i>
+   Modo Escuro
+  </button>
+<header>
+<h1>
+    Museu Virtual de Tecnologias Antigas
+   </h1>
+<nav>
+<ul>
+<li>
+<a href="#sobre">
+       Sobre
+      </a>
+</li>
+<li>
+<a href="#acervo">
+       Acervo
+      </a>
+</li>
+<li>
+<a href="#contato">
+       Contato
+      </a>
+</li>
+</ul>
+</nav>
+</header>
+<section id="hero">
+<h2>
+    Preservando a história da informática
+   </h2>
+<p>
+    Uma jornada visual pela evolução dos equipamentos que marcaram gerações e transformaram o mundo digital.
+   </p>
+</section>
+<section id="sobre">
+<h2>
+    Sobre o Museu
+   </h2>
+<p>
+    O Museu Virtual de Tecnologias Antigas é um projeto educacional e cultural voltado à preservação e divulgação de equipamentos históricos da computação. Disquetes, processadores, periféricos e outros itens compõem um acervo visual e técnico acessível para todos os públicos.
+   </p>
+</section>
+<section id="acervo">
+<div id="filtros" style="text-align: center; margin-bottom: 40px;">
+<button class="filtro-btn" data-filtro="Todos">
+     Todos
+    </button>
+<button class="filtro-btn" data-filtro="Memórias-RAM">
+     Memórias RAM
+    </button>
+<button class="filtro-btn" data-filtro="Placas-mãe">
+     Placas-mãe
+    </button>
+<button class="filtro-btn" data-filtro="Placas-de-vídeo-e-expansão">
+     Placas de vídeo e expansão
+    </button>
+<button class="filtro-btn" data-filtro="Fontes-e-Nobreaks">
+     Fontes e Nobreaks
+    </button>
+</div>
+<h2>
+    Acervo
+   </h2>
+<div class="galeria">
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Memórias RAM
+    </h3>
+<div class="item" data-categoria="Memórias-RAM">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Micron EDO RAM 32MB" href="Micron MT4LDT832UG-6S.jpg">
+<img alt="Micron EDO RAM 32MB - Verso" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="Micron MT4LDT832UG-6S.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Micron EDO RAM 32MB" href="Micron MT4LDT832UG-6.jpg">
+<img alt="Micron EDO RAM 32MB - Frente" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="Micron MT4LDT832UG-6.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Micron EDO RAM 32MB
+     </h3>
+<p>
+      Módulo de memória EDO RAM com dois lados distintos, utilizado entre 1995 e 1998.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Placas-mãe
+    </h3>
+<div class="item" data-categoria="Placas-mãe">
+<a class="glightbox" data-gallery="Placa-mãe Soyo SY-6VCA" href="MS - 61.jpg">
+<img alt="Placa-mãe Soyo SY-6VCA" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="MS - 61.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease;"/>
+</a>
+<h3>
+      Placa-mãe Soyo SY-6VCA
+     </h3>
+<p>
+      Compatível com Pentium III, popular no final dos anos 90.
+     </p>
+</div>
+<div class="item" data-categoria="Placas-mãe">
+<a class="glightbox" data-gallery="Placa-mãe TXPro-II" href="TXPro-II.jpg">
+<img alt="Placa-mãe TXPro-II" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="TXPro-II.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease;"/>
+</a>
+<a class="glightbox" data-gallery="Placa-mãe TXPro-II" href="TXPro-II 2.jpg">
+<img alt="Placa-mãe TXPro-II" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="TXPro-II 2.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease;"/>
+</a>
+<h3>
+      Placa-mãe TXPro-II
+     </h3>
+<p>
+      Placa com slots ISA/PCI, usada com CPUs Socket 7 como Pentium MMX e AMD K6.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Placas de vídeo e expansão
+    </h3>
+<div class="item" data-categoria="Placas de vídeo e expansão">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Placa de Vídeo GeForce FX" href="GEFORCE FX.jpg">
+<img alt="Placa de Vídeo GeForce FX" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="GEFORCE FX.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Placa de Vídeo GeForce FX
+     </h3>
+<p>
+      Placa gráfica da série FX da NVIDIA, lançada no início dos anos 2000 para usuários domésticos.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Processadores
+    </h3>
+<div class="item" data-categoria="Processadores">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="AMD Duron DHD1400A1B" href="AMD Duron DHD1400A1B.jpg">
+<img alt="AMD Duron DHD1400A1B" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="AMD Duron DHD1400A1B.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      AMD Duron DHD1400A1B
+     </h3>
+<p>
+      Processador AMD Duron de 1.4GHz, lançado em 2001 com foco em custo-benefício para desktops básicos.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Monitores
+    </h3>
+<div class="item" data-categoria="Monitores">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Monitor AOC CT500G" href="AOC CT500G.jpg">
+<img alt="Monitor AOC CT500G" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="AOC CT500G.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Monitor AOC CT500G
+     </h3>
+<p>
+      Monitor CRT da AOC, utilizado amplamente no final dos anos 90 e início dos anos 2000.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Gabinetes
+    </h3>
+<div class="item" data-categoria="Gabinetes">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Databox Aberto" href="Databox 2.jpg">
+<img alt="Databox Aberto" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="Databox 2.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Databox Aberto
+     </h3>
+<p>
+      Gabinete antigo mostrando estrutura interna com cabeamento flat e fontes antigas.
+     </p>
+</div>
+<div class="item" data-categoria="Gabinetes">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Databox Frontal" href="Databox.jpg">
+<img alt="Databox Frontal" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="Databox.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Databox Frontal
+     </h3>
+<p>
+      Gabinete frontal com botão Turbo, LED de MHz e entrada para disquete, típico dos anos 90.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Notebooks
+    </h3>
+<div class="item" data-categoria="Notebooks">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Compaq Evo N1020v" href="compaq evo n1020v.jpg">
+<img alt="Compaq Evo N1020v" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="compaq evo n1020v.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Notebook Evo N1020v
+     </h3>
+<p>
+      Notebook corporativo da linha Evo, popular no início dos anos 2000.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Redes
+    </h3>
+<div class="item" data-categoria="Redes">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Switch IBM 8271-612" href="IBM 8271-812.jpg">
+<img alt="Switch IBM 8271-612" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="IBM 8271-812.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Switch IBM 8271-612
+     </h3>
+<p>
+      Equipamento de rede empresarial com múltiplas portas Ethernet, usado em ambientes corporativos.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Drives
+    </h3>
+<div class="item" data-categoria="Drives">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Drive de disquete Sony MPF920" href="IMG-20250801-WA0030.jpg">
+<img alt="Drive de disquete Sony MPF920" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="IMG-20250801-WA0030.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Drive de disquete Sony MPF920
+     </h3>
+<p>
+      Drive de disquete de 3,5" da Sony, modelo MPF920, fabricado em 2003.
+     </p>
+</div>
+<h3 style="grid-column: 1 / -1; font-size: 1.5rem; margin-top: 50px; color: var(--accent);">
+     Equipamentos diversos
+    </h3>
+<div class="item" data-categoria="Equipamentos diversos">
+<div style="margin-bottom: 10px;">
+<a class="glightbox" data-gallery="Servidor Cisco com HDs e motor" href="IMG-20250801-WA0034.jpg">
+<img alt="Servidor Cisco com HDs e motor" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" src="IMG-20250801-WA0034.jpg" style="margin-bottom: 10px; border-radius: 10px; transition: transform 0.3s ease; width: 100%; height: 200px; object-fit: cover;"/>
+</a>
+</div>
+<h3>
+      Servidor Cisco com HDs e motor
+     </h3>
+<p>
+      Equipamento incomum contendo peças de servidor Cisco, HDs e motor mecânico acoplado.
+     </p>
+</div>
+</div>
+</section>
+<section id="contato">
+<h2>
+    Contato
+   </h2>
+<p>
+<i class="fas fa-envelope">
+</i>
+    Envie dúvidas ou contribuições para:
+    <strong>
+     yurifsrego@gmail.com
+    </strong>
+</p>
+</section>
+<footer>
+<p>
+    © 2025 Museu Virtual de Tecnologias Antigas.
+   </p>
+</footer>
+<button id="topBtn" onclick="topFunction()" title="Voltar ao topo">
+<i class="fas fa-arrow-up">
+</i>
+</button>
+<script>
+   function toggleDark() {
+      document.body.classList.toggle("dark");
+    }
+    const topBtn = document.getElementById("topBtn");
+    window.onscroll = function () {
+      topBtn.style.display = document.documentElement.scrollTop > 300 ? "block" : "none";
+    };
+    function topFunction() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js">
+</script>
+<script>
+   const botoes = document.querySelectorAll(".filtro-btn");
+const itens = document.querySelectorAll(".galeria .item");
+
+botoes.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const filtro = btn.getAttribute("data-filtro");
+    itens.forEach(item => {
+      if (filtro === "Todos" || item.getAttribute("data-categoria") === filtro) {
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
+    });
+  });
+});
+
+const lightbox = GLightbox({
+  selector: '.glightbox'
+});
+  </script>
+</body>
+</html>
